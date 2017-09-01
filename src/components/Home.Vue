@@ -1,6 +1,6 @@
 <template>
-    <div id="main">
-        <div @click="$event.target.classList.toggle('active')" v-bind:id="article.id" class="block" v-for="(article, key) in articles">
+	<div id="main">
+		<div @click="$event.target.classList.toggle('active')" v-bind:id="article.id" class="block" v-for="(article, key) in articles">
 			<div v-bind:id="article.id" class="article">
 				<div class="maximal">
 					<div v-bind:id="article.id" @click="$event.target.classList.toggle('star')" class="item-star unstar"></div>
@@ -26,7 +26,7 @@
 				No More Posts - All items marked as read!
 			</span>
 		</infinite-loading>
-    </div>
+	</div>
 </template>
 
 <style>
