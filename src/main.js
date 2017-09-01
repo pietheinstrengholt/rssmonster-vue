@@ -7,6 +7,6 @@ Vue.use(VueResource);
 Vue.http.options.root = 'http://localhost/rssmonster/public/index.php/api/';
 
 new Vue({
-  el: '#app',
-  render: h => h(App)
-})
+	el: '#app',
+	render: h => h(App)
+});
