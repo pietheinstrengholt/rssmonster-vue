@@ -21,15 +21,3 @@
     	</div>
     </div>
 </template>
-
-<style>
-.column-left {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    bottom: 10px;
-    width: 180px;
-    overflow-y: auto;
-    background-color: #eee;
-}
-</style>

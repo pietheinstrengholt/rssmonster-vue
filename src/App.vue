@@ -1,8 +1,12 @@
 <template>
     <div id="app">
-        <div class="container">
-            <app-sidebar></app-sidebar>
-            <app-home></app-home>
+        <div class="row">
+            <div class="sidebar col-md-2" style="position:fixed">
+                <app-sidebar></app-sidebar>
+            </div>
+            <div class="col-md-10 col-md-offset-2">
+                <app-home></app-home>
+            </div>
         </div>
 
     </div>
@@ -18,3 +22,9 @@
         }
     }
 </script>
+
+<style>
+#app {
+    overflow-x:hidden;
+}
+</style>

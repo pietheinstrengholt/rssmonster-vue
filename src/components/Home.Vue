@@ -32,10 +32,6 @@
 </template>
 
 <style>
-.column-right {
-    margin-left: 200px;
-}
-
 div.block {
 	margin-bottom: 0px;
 	padding-top: 5px;
