@@ -1,16 +1,19 @@
 <template>
     <div id="app">
-        <app-header></app-header>
-        <app-home></app-home>
+        <div class="container">
+            <app-sidebar></app-sidebar>
+            <app-home></app-home>
+        </div>
+
     </div>
 </template>
 
 <script>
-    import Header from './components/Header.vue';
+    import Sidebar from './components/Sidebar.vue';
     import Home from './components/Home.vue';
     export default {
         components: {
-            appHeader: Header,
+            appSidebar: Sidebar,
             appHome: Home
         }
     }
