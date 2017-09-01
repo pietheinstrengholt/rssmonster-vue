@@ -1,34 +1,32 @@
 <template>
-	<div class="column-right">
-        <div id="main">
-            <div @click="$event.target.classList.toggle('active')" v-bind:id="article.id" class="block" v-for="(article, key) in articles">
-    			<div v-bind:id="article.id" class="article">
-    				<div class="maximal">
-    					<div v-bind:id="article.id" @click="$event.target.classList.toggle('star')" class="item-star unstar"></div>
-    					<h4 class="heading">
-    						<a v-bind:id="article.id" target="_blank" :href="article.url" v-text="article.subject"></a>
-    					</h4>
-    					<div class="feedname">
-    						<span class="favicon">
-    							<img class="favicon" src="#">
-    						</span>
-    						<span class="feed_name" v-text="article.feed_name"></span>
-    						<span class="break"> | </span>
-    						<span class="published_date" v-text="article.published"></span>
-    					</div>
-    				</div>
+    <div id="main">
+        <div @click="$event.target.classList.toggle('active')" v-bind:id="article.id" class="block" v-for="(article, key) in articles">
+			<div v-bind:id="article.id" class="article">
+				<div class="maximal">
+					<div v-bind:id="article.id" @click="$event.target.classList.toggle('star')" class="item-star unstar"></div>
+					<h4 class="heading">
+						<a v-bind:id="article.id" target="_blank" :href="article.url" v-text="article.subject"></a>
+					</h4>
+					<div class="feedname">
+						<span class="favicon">
+							<img class="favicon" src="#">
+						</span>
+						<span class="feed_name" v-text="article.feed_name"></span>
+						<span class="break"> | </span>
+						<span class="published_date" v-text="article.published"></span>
+					</div>
+				</div>
 
-    				<div v-bind:id="article.id" class="article-content" v-html="article.content">
-    				</div>
-    			</div>
-    		</div>
-    		<infinite-loading :on-infinite="onInfinite" ref="infiniteLoading">
-    			<span slot="no-more">
-    				No More Posts - All items marked as read!
-    			</span>
-    		</infinite-loading>
-        </div>
-	</div>
+				<div v-bind:id="article.id" class="article-content" v-html="article.content">
+				</div>
+			</div>
+		</div>
+		<infinite-loading :on-infinite="onInfinite" ref="infiniteLoading">
+			<span slot="no-more">
+				No More Posts - All items marked as read!
+			</span>
+		</infinite-loading>
+    </div>
 </template>
 
 <style>
@@ -37,7 +35,7 @@ div.block {
 	padding-top: 5px;
 }
 
-.article {
+div.block .article {
 	padding-left: 5px;
 	padding-right: 5px;
 	border-color:#B4B7BD;
@@ -102,7 +100,7 @@ div.block div.article hr {
 	border-top: 1px solid #D3D3D3;
 }
 
-div.block.active {
+div.block .active {
 	background-color: #ffffe5;
 }
 
