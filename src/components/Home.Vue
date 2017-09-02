@@ -160,7 +160,8 @@ export default {
 			isActive: false,
 			articles: [],
 			container: [],
-			pool: []
+			pool: [],
+			waypointPool: []
 		}
 	},
 	components: {
@@ -192,7 +193,13 @@ export default {
 							this.articles = this.articles.concat(res.data);
 							this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
 							setTimeout(() => {
-								this.waypointCreate();
+								for (var key in this.articles) {
+									var article = this.articles[key];
+									if (!this.waypointPool.includes(article.id)) {
+										this.waypointCreate(article.id);
+										this.waypointPool.push(article.id);
+									}
+								}
 							}, 100);
 						} else {
 							this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
@@ -204,9 +211,9 @@ export default {
 		highlight: function() {
 			this.isActive = !this.isActive;
 		},
-		waypointCreate: function() {
+		waypointCreate: function(article) {
 			var waypoint = new Waypoint({
-				element: document.getElementById('30'),
+				element: document.getElementById(article),
 				handler: function(direction) {
 					if (direction == "down") {
 						console.log('mark as read: ' + this.element.id);
