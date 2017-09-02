@@ -192,15 +192,17 @@ export default {
 							this.distance = this.distance + res.data.length;
 							this.articles = this.articles.concat(res.data);
 							this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
+							//add waypoint to every article
 							setTimeout(() => {
 								for (var key in this.articles) {
 									var article = this.articles[key];
+									//make sure only one waypoint per article is set, check the waypointPool for this
 									if (!this.waypointPool.includes(article.id)) {
 										this.waypointCreate(article.id);
 										this.waypointPool.push(article.id);
 									}
 								}
-							}, 100);
+							}, 50);
 						} else {
 							this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
 						}
@@ -216,6 +218,7 @@ export default {
 				element: document.getElementById(article),
 				handler: function(direction) {
 					if (direction == "down") {
+						//TODO: only mark the article as read once
 						console.log('mark as read: ' + this.element.id);
 					}
 				}
