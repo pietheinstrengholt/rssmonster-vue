@@ -1,32 +1,32 @@
 <template>
-	<div id="main">
-		<div @click="$event.target.classList.toggle('active')" v-bind:id="article.id" class="block" v-for="(article, key) in articles">
-			<div v-bind:id="article.id" class="article">
-				<div class="maximal">
-					<div v-bind:id="article.id" @click="$event.target.classList.toggle('star')" class="item-star unstar"></div>
-					<h4 class="heading">
+<div id="main">
+	<div @click="$event.target.classList.toggle('active')" v-bind:id="article.id" class="block" v-for="(article, key) in articles">
+		<div v-bind:id="article.id" class="article">
+			<div class="maximal">
+				<div v-bind:id="article.id" @click="$event.target.classList.toggle('star')" class="item-star unstar"></div>
+				<h4 class="heading">
 						<a v-bind:id="article.id" target="_blank" :href="article.url" v-text="article.subject"></a>
 					</h4>
-					<div class="feedname">
-						<span class="favicon">
+				<div class="feedname">
+					<span class="favicon">
 							<img class="favicon" src="#">
 						</span>
-						<span class="feed_name" v-text="article.feed_name"></span>
-						<span class="break"> | </span>
-						<span class="published_date" v-text="article.published"></span>
-					</div>
-				</div>
-
-				<div v-bind:id="article.id" class="article-content" v-html="article.content">
+					<span class="feed_name" v-text="article.feed_name"></span>
+					<span class="break"> | </span>
+					<span class="published_date" v-text="article.published"></span>
 				</div>
 			</div>
+
+			<div v-bind:id="article.id" class="article-content" v-html="article.content">
+			</div>
 		</div>
-		<infinite-loading :on-infinite="onInfinite" ref="infiniteLoading">
-			<span slot="no-more">
+	</div>
+	<infinite-loading :on-infinite="onInfinite" ref="infiniteLoading">
+		<span slot="no-more">
 				No More Posts - All items marked as read!
 			</span>
-		</infinite-loading>
-	</div>
+	</infinite-loading>
+</div>
 </template>
 
 <style>
@@ -38,8 +38,8 @@ div.block {
 div.block .article {
 	padding-left: 5px;
 	padding-right: 5px;
-	border-color:#B4B7BD;
-	border-width:1px;
+	border-color: #B4B7BD;
+	border-width: 1px;
 }
 
 div.block .article {
@@ -52,7 +52,7 @@ div.block .article h4 {
 }
 
 div.block .article h4 a {
-	font-weight:600;
+	font-weight: 600;
 }
 
 div.block div.article-content {
@@ -73,7 +73,7 @@ div.block div.article-content {
 
 div.block .article h5 a {
 	color: #333333;
-	font-weight:400;
+	font-weight: 400;
 }
 
 div.block div.article hr {
@@ -84,7 +84,7 @@ div.block div.article hr {
 
 div.block div.feedname {
 	margin-top: -11px ! important;
-	font-size:12px;
+	font-size: 12px;
 	padding-top: 4px;
 	padding-left: 0px;
 	font-weight: bold;
@@ -109,7 +109,8 @@ div.block div.article-content {
 	margin-left: 0px;
 }
 
-div.block div.item-star.star, div.block div.item-star.unstar {
+div.block div.item-star.star,
+div.block div.item-star.unstar {
 	height: 29px;
 	background-repeat: no-repeat;
 	float: left;
@@ -147,6 +148,10 @@ div.block div.article-content img {
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading';
+//import Waypoint from 'waypoints/lib/noframework.waypoints.js';
+require('waypoints/lib/noframework.waypoints.js');
+
+//new Waypoint({ element: document.getElementById('blackDiv'), handler: function() { console.log('###'); }, offset: "-10%" }); 
 
 export default {
 	data() {
@@ -186,6 +191,9 @@ export default {
 							this.distance = this.distance + res.data.length;
 							this.articles = this.articles.concat(res.data);
 							this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
+							setTimeout(() => {
+								this.waypointCreate();
+							}, 100);
 						} else {
 							this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
 						}
@@ -195,6 +203,16 @@ export default {
 		},
 		highlight: function() {
 			this.isActive = !this.isActive;
+		},
+		waypointCreate: function() {
+			var waypoint = new Waypoint({
+				element: document.getElementById('30'),
+				handler: function(direction) {
+					if (direction == "down") {
+						console.log('mark as read: ' + this.element.id);
+					}
+				}
+			});
 		}
 	},
 }
