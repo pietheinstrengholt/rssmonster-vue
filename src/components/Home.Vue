@@ -1,9 +1,9 @@
 <template>
 <div id="main">
-	<div @click="$event.target.classList.toggle('active')" v-bind:id="article.id" class="block" v-for="(article, key) in articles">
+	<div v-bind:id="article.id" class="block" v-for="(article, key) in articles">
 		<div v-bind:id="article.id" class="article">
 			<div class="maximal">
-				<div v-bind:id="article.id" @click="$event.target.classList.toggle('star')" class="item-star unstar"></div>
+				<div v-bind:class="{'bookmarked': article.star_ind == 1}" v-bind:id="article.id" v-on:click="bookmark($event)" @click="$event.target.classList.toggle('bookmarked')" class="bookmark"></div>
 				<h4 class="heading">
 						<a v-bind:id="article.id" target="_blank" :href="article.url" v-text="article.subject"></a>
 					</h4>
@@ -109,8 +109,8 @@ div.block div.article-content {
 	margin-left: 0px;
 }
 
-div.block div.item-star.star,
-div.block div.item-star.unstar {
+div.block div.bookmark,
+div.block div.bookmarked {
 	height: 29px;
 	background-repeat: no-repeat;
 	float: left;
@@ -120,23 +120,15 @@ div.block div.item-star.unstar {
 	margin-left: -6px;
 	cursor: pointer;
 	background-position: center top 5px;
-}
-
-div.block div.item-star.unstar {
 	background-size: 18px 18px;
 	background-position: 8px 10px;
 }
 
-div.block div.item-star.star {
-	background-size: 18px 18px;
-	background-position: 8px 10px;
-}
-
-div.block div.item-star.unstar {
+div.block div.bookmark {
 	background-image: url('http://localhost/rssmonster/public/img/heart_unselected.png');
 }
 
-div.block div.item-star.star {
+div.block div.bookmarked {
 	background-image: url('http://localhost/rssmonster/public/img/heart_selected.png');
 }
 
@@ -207,9 +199,6 @@ export default {
 				}
 			}, 200);
 		},
-		highlight: function() {
-			this.isActive = !this.isActive;
-		},
 		waypointCreate: function(article) {
 			var waypoint = new Waypoint({
 				element: document.getElementById(article),
@@ -222,7 +211,28 @@ export default {
 					}
 				}
 			});
+		},
+		bookmark: function (event) {
+			//determine if classname already contains bookmarked, if so, the change is unmark
+			//TODO: increase decrease bookmark count
+			if( event.currentTarget.className.indexOf('bookmarked') >= 0){
+				var bookmarkChange = 'unmark';
+			} else {
+				var bookmarkChange = 'mark';
+			}
+
+			//make ajax request to change bookmark status
+			this.$http.post('http://localhost/rssmonster/public/api/article/mark-with-star/' + event.currentTarget.id, {update: bookmarkChange}).then(response => {
+				// get status
+				console.log(response.status);
+
+				// get status text
+				console.log(response.statusText);
+
+			}, response => {
+				console.log('oops something went wrong');
+			});
 		}
-	},
+	}
 }
 </script>
