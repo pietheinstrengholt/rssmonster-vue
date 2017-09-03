@@ -1,30 +1,30 @@
 <template>
 <div id="main">
 	<div v-bind:id="article.id" class="block" v-for="(article, key) in articles">
-		<div v-bind:id="article.id" class="article">
+		<div class="article">
 			<div class="maximal">
-				<div v-bind:class="{'bookmarked': article.star_ind == 1}" v-bind:id="article.id" v-on:click="bookmark($event)" @click="$event.target.classList.toggle('bookmarked')" class="bookmark"></div>
+				<div v-bind:class="{'bookmarked': article.star_ind == 1}" v-on:click="bookmark(article.id, $event)" @click="$event.target.classList.toggle('bookmarked')" class="bookmark"></div>
 				<h4 class="heading">
-						<a v-bind:id="article.id" target="_blank" :href="article.url" v-text="article.subject"></a>
-					</h4>
+					<a target="_blank" :href="article.url" v-text="article.subject"></a>
+				</h4>
 				<div class="feedname">
 					<span class="favicon">
-							<img class="favicon" src="#">
-						</span>
+						<img class="favicon" src="#">
+					</span>
 					<span class="feed_name" v-text="article.feed_name"></span>
 					<span class="break"> | </span>
 					<span class="published_date" v-text="article.published"></span>
 				</div>
 			</div>
 
-			<div v-bind:id="article.id" class="article-content" v-html="article.content">
+			<div class="article-content" v-html="article.content">
 			</div>
 		</div>
 	</div>
 	<infinite-loading :on-infinite="onInfinite" ref="infiniteLoading">
 		<span slot="no-more">
-				No More Posts - All items marked as read!
-			</span>
+			No More Posts - All items marked as read!
+		</span>
 	</infinite-loading>
 </div>
 </template>
@@ -202,7 +202,7 @@ export default {
 		waypointCreate: function(article) {
 			var waypoint = new Waypoint({
 				element: document.getElementById(article),
-				offset: -25,
+				offset: -150,
 				handler: function(direction) {
 					if (direction == "down") {
 						console.log('mark as read: ' + this.element.id);
@@ -212,7 +212,7 @@ export default {
 				}
 			});
 		},
-		bookmark: function (event) {
+		bookmark: function (article, event) {
 			//determine if classname already contains bookmarked, if so, the change is unmark
 			//TODO: increase decrease bookmark count
 			if( event.currentTarget.className.indexOf('bookmarked') >= 0){
@@ -222,7 +222,7 @@ export default {
 			}
 
 			//make ajax request to change bookmark status
-			this.$http.post('http://localhost/rssmonster/public/api/article/mark-with-star/' + event.currentTarget.id, {update: bookmarkChange}).then(response => {
+			this.$http.post('http://localhost/rssmonster/public/api/article/mark-with-star/' + article, {update: bookmarkChange}).then(response => {
 				// get status
 				console.log(response.status);
 
