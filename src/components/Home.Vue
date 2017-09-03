@@ -148,10 +148,7 @@ div.block div.article-content img {
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading';
-//import Waypoint from 'waypoints/lib/noframework.waypoints.js';
 require('waypoints/lib/noframework.waypoints.js');
-
-//new Waypoint({ element: document.getElementById('blackDiv'), handler: function() { console.log('###'); }, offset: "-10%" }); 
 
 export default {
 	data() {
@@ -216,10 +213,12 @@ export default {
 		waypointCreate: function(article) {
 			var waypoint = new Waypoint({
 				element: document.getElementById(article),
+				offset: -25,
 				handler: function(direction) {
 					if (direction == "down") {
-						//TODO: only mark the article as read once
 						console.log('mark as read: ' + this.element.id);
+						//destroy after the article has been marked as read
+						this.destroy();
 					}
 				}
 			});
