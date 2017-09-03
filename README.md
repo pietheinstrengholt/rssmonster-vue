@@ -1,6 +1,7 @@
 # rssmonster
 
 > RSSMonster
+An attempt to recreate RSSMonster with a VueJS front-end.
 
 ## Build Setup
 
