@@ -7,7 +7,7 @@
 		</div>
 		<div class="drag">
 			<draggable v-model="categories" class="dragArea" :options="{group:{ name:'category', pull:'clone', put:false }}">
-				<div class="sidebar-category-main" v-on:click="loadCategory" v-bind:id="category.id" v-for="(category, index) in categories" :key="index">
+				<div class="sidebar-category-main" v-on:click="loadCategory(category.id)" v-bind:id="category.id" v-for="(category, index) in categories" :key="index">
 					<div class="sidebar-category-sub">
 						<div class="glyphicon">
 							<span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
@@ -18,7 +18,7 @@
 						</div>
 					</div>
 					<div v-if="category.feeds" class="sidebar-category-feeds">
-						<div class="sidebar-category-feed" v-on:click="loadFeed" v-bind:id="feed.id" v-for="(feed, index) in category.feeds" :key="index">
+						<div class="sidebar-category-feed" v-on:click="loadFeed(feed.id)" v-bind:id="feed.id" v-for="(feed, index) in category.feeds" :key="index">
 							<div class="glyphicon">
 								<span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>
 							</div>
@@ -159,9 +159,11 @@ export default {
 				this.categories = data;
 			});
 		},
-		loadCategory: function (event) {
-			console.log(event);
-			console.log(this);
+		loadCategory: function (category, event) {
+			console.log('category_id clicked: ' + category);
+		},
+		loadFeed: function (feed, event) {
+			console.log('feed_id clicked: ' + feed);
 		}
 	},
 	computed: {
