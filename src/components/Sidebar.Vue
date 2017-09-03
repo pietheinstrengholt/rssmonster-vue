@@ -6,16 +6,42 @@
 			<a id="read" class="view-button selected" title="View all" data-behavior="view_all change_view_mode" data-view-mode="view_all" data-remote="true">Read</a>
 		</div>
 		<div class="drag">
-			<draggable v-model="categories" class="dragArea" :options="{group:{ name:'category',	pull:'clone', put:false }}">
-				<div v-on:click="loadCategory" v-bind:id="category.id" v-for="(category, index) in categories" :key="index">{{category.name}}</div>
+			<draggable v-model="categories" class="dragArea" :options="{group:{ name:'category', pull:'clone', put:false }}">
+				<div class="sidebar-category-main" v-on:click="loadCategory" v-bind:id="category.id" v-for="(category, index) in categories" :key="index">
+					<div class="sidebar-category-sub">
+						<div class="glyphicon">
+							<span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
+						</div>
+						<div class="title">{{category.name}}</div>
+						<div class="badge-unread">
+							<span class="badge">{{category.unread_count}}</span>
+						</div>
+					</div>
+					<div v-if="category.feeds" class="sidebar-category-feeds">
+						<div class="sidebar-category-feed" v-on:click="loadFeed" v-bind:id="feed.id" v-for="(feed, index) in category.feeds" :key="index">
+							<div class="glyphicon">
+								<span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>
+							</div>
+							<div class="title">{{feed.feed_name}}</div>
+							<div class="badge-unread">
+								<span class="badge">{{feed.unread_count}}</span>
+							</div>
+						</div>
+					</div>
+				</div>
 			</draggable>
+		</div>
+		<div style="margin-top:400px; position: absolute;">
 			<pre>{{orderList}}</pre>
 		</div>
+
 	</div>
 </template>
 
 <style>
 .view-toolbar {
+	width: 100%;
+	background-color: #eff1f3;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;
@@ -24,8 +50,6 @@
 	border-bottom: 1px solid transparent;
 	border-color: #dcdee0;
 	position: absolute;
-	left: 8px;
-	right: 8px;
 }
 
 .view-button {
@@ -67,6 +91,7 @@
 }
 
 .drag {
+	background-color: #eff1f3;
 	margin-top:41px;
 	position: absolute;
 	width:100%;
@@ -74,6 +99,37 @@
 
 .dragArea {
 	min-height: 20px;
+}
+
+div.sidebar-category-sub, div.sidebar-category-feed {
+	padding: 4px;
+}
+
+span.badge {
+	float: right;
+	color: #7a7c7e;
+	font-weight: 100;
+	background-color: transparent !important;
+}
+
+sidebar-category-main {
+	width: 100%;
+}
+
+div.badge-unread {
+	float:right;
+}
+
+div.title {
+	text-overflow: ellipsis;
+	overflow:hidden;
+	white-space:nowrap;
+	display: inline-block;
+}
+
+div.glyphicon {
+	float:left;
+	margin-right:3px;
 }
 
 </style>
