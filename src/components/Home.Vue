@@ -156,7 +156,7 @@ export default {
 	components: {
 		InfiniteLoading,
 	},
-	beforeCreate: function() {
+	beforeCreate() {
 		this.$http.get('http://localhost/rssmonster/public/api/article/listing?status=unread')
 			.then(response => {
 				return response.json();
@@ -166,7 +166,7 @@ export default {
 			});
 	},
 	methods: {
-		onInfinite: function() {
+		onInfinite() {
 			setTimeout(() => {
 				if ((this.container.slice(this.distance, this.distance + 20)).length == 0) {
 					this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
@@ -199,20 +199,27 @@ export default {
 				}
 			}, 200);
 		},
-		waypointCreate: function(article) {
+		waypointCreate(article) {
 			var waypoint = new Waypoint({
 				element: document.getElementById(article),
 				offset: -150,
-				handler: function(direction) {
+				//use the ES2015 arrow syntax to avoid error Cannot read property 'post' of undefined
+				handler: (direction) => {
 					if (direction == "down") {
-						console.log('mark as read: ' + this.element.id);
+						//make ajax request to change bookmark status
+						this.$http.post('http://localhost/rssmonster/public/api/article/mark-to-read/' + article).then(response => {
+							// get article content
+							console.log(response.body);
+						}, response => {
+							console.log('oops something went wrong');
+						});
 						//destroy after the article has been marked as read
-						this.destroy();
+						waypoint.destroy();
 					}
 				}
 			});
 		},
-		bookmark: function (article, event) {
+		bookmark(article, event) {
 			//determine if classname already contains bookmarked, if so, the change is unmark
 			//TODO: increase decrease bookmark count
 			if( event.currentTarget.className.indexOf('bookmarked') >= 0){
