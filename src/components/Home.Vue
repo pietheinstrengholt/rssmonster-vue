@@ -193,6 +193,7 @@ export default {
 								}
 							}, 50);
 						} else {
+							//TODO: flush and mark remaining items in queue as read
 							this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
 						}
 					});
