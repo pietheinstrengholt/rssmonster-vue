@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <div class="row">
+        <div class="row" style="margin-right:0px;">
             <div class="sidebar col-md-2" style="position:fixed">
                 <app-sidebar></app-sidebar>
             </div>
@@ -8,7 +8,6 @@
                 <app-home></app-home>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -22,9 +21,3 @@
         }
     }
 </script>
-
-<style>
-#app {
-    overflow-x:hidden;
-}
-</style>
