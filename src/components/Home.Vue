@@ -193,12 +193,24 @@ export default {
 								}
 							}, 50);
 						} else {
-							//TODO: flush and mark remaining items in queue as read
+							//show complete message and flush remaining items in queue by marking them all as read
 							this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+							this.flushPool();
 						}
 					});
 				}
 			}, 200);
+		},
+		flushPool() {
+			//check if the container is present
+			if (this.container.length) {
+				//loop through the container and mark every item that is not part of the pool as read
+				for (var i in this.container) {
+					if (!this.pool.includes(this.container[i])) {
+						this.markArticleRead(this.container[i]);
+					}
+				}
+			}
 		},
 		waypointCreate(article) {
 			var waypoint = new Waypoint({
@@ -208,16 +220,22 @@ export default {
 				handler: (direction) => {
 					if (direction == "down") {
 						//make ajax request to change bookmark status
-						this.$http.post('http://localhost/rssmonster/public/api/article/mark-to-read/' + article).then(response => {
-							// get article content
-							console.log(response.body);
-						}, response => {
-							console.log('oops something went wrong');
-						});
+						this.markArticleRead(article);
 						//destroy after the article has been marked as read
 						waypoint.destroy();
 					}
 				}
+			});
+		},
+		markArticleRead(article) {
+			//make ajax request to change bookmark status
+			this.$http.post('http://localhost/rssmonster/public/api/article/mark-to-read/' + article).then(response => {
+				// get article content
+				console.log(response.body);
+				//push id to the pool
+				this.pool.push(article.id);
+			}, response => {
+				console.log('oops something went wrong');
 			});
 		},
 		bookmark(article, event) {
