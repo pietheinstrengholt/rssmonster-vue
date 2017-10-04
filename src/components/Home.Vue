@@ -142,6 +142,14 @@ div.block div.article-content img {
 import InfiniteLoading from 'vue-infinite-loading';
 require('waypoints/lib/noframework.waypoints.js');
 
+//import the EventBus
+import { EventBus } from './../event-bus.js';
+
+// Listen for the i-got-clicked event and its payload.
+EventBus.$on('status', status => {
+	console.log(`Oh, that's nice. the status has been changed to ${status}! :)`);
+});
+
 export default {
 	data() {
 		return {

@@ -1,9 +1,9 @@
 <template>
 	<div class="feeds-inner">
 		<div class="view-toolbar">
-			<a id="unread" class="view-button" title="View unread" data-behavior="view_unread change_view_mode" data-view-mode="view_unread" data-remote="true" style="color: rgb(51, 51, 51);">Unread</a>
-			<a id="star" class="view-button" title="View starred" data-behavior="view_starred change_view_mode" data-view-mode="view_starred" data-remote="true">Starred</a>
-			<a id="read" class="view-button selected" title="View all" data-behavior="view_all change_view_mode" data-view-mode="view_all" data-remote="true">Read</a>
+			<a v-on:click="loadData('unread')" id="unread" class="view-button" title="View unread" data-behavior="view_unread change_view_mode" data-view-mode="view_unread" data-remote="true" style="color: rgb(51, 51, 51);">Unread</a>
+			<a v-on:click="loadData('star')" id="star" class="view-button" title="View starred" data-behavior="view_starred change_view_mode" data-view-mode="view_starred" data-remote="true">Starred</a>
+			<a v-on:click="loadData('read')" id="read" class="view-button selected" title="View all" data-behavior="view_all change_view_mode" data-view-mode="view_all" data-remote="true">Read</a>
 		</div>
 		<div class="drag">
 			<draggable v-model="categories" class="dragArea" :options="{group:{ name:'category', pull:'clone', put:false }}">
@@ -137,6 +137,9 @@ div.glyphicon {
 <script>
 import draggable from 'vuedraggable';
 
+//import the EventBus
+import { EventBus } from './../event-bus.js';
+
 export default {
 	data() {
 		return {
@@ -164,6 +167,11 @@ export default {
 		},
 		loadFeed: function (feed, event) {
 			console.log('feed_id clicked: ' + feed);
+		},
+		loadData: function (input) {
+			console.log(input);
+			//in component A's method
+			EventBus.$emit('status', input);
 		}
 	},
 	computed: {
