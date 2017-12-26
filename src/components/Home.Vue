@@ -146,8 +146,13 @@ require('waypoints/lib/noframework.waypoints.js');
 import { EventBus } from './../event-bus.js';
 
 // Listen for the i-got-clicked event and its payload.
-EventBus.$on('status', status => {
-	console.log(`Oh, that's nice. the status has been changed to ${status}! :)`);
+EventBus.$on('category', status => {
+	console.log(`Oh, that's nice. the category has been changed to ${status}! :)`);
+	RSSMonster.flushPool();
+});
+
+EventBus.$on('feed', status => {
+	console.log(`Oh, that's nice. the feed has been changed to ${status}! :)`);
 });
 
 export default {

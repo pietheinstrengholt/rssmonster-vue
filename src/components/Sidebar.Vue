@@ -164,14 +164,11 @@ export default {
 		},
 		loadCategory: function (category, event) {
 			console.log('category_id clicked: ' + category);
+			EventBus.$emit('category', category);
 		},
 		loadFeed: function (feed, event) {
 			console.log('feed_id clicked: ' + feed);
-		},
-		loadData: function (input) {
-			console.log(input);
-			//in component A's method
-			EventBus.$emit('status', input);
+			EventBus.$emit('feed', feed);
 		}
 	},
 	computed: {
