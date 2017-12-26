@@ -137,15 +137,15 @@ div.glyphicon {
 <script>
 import draggable from 'vuedraggable';
 
-//import the EventBus
-import { EventBus } from './../event-bus.js';
-
 export default {
 	data() {
 		return {
 			categories: []
 		}
 	},
+	store: {
+        data: 'data'
+    },
 	components: {
 		draggable
 	},
@@ -163,12 +163,10 @@ export default {
 			});
 		},
 		loadCategory: function (category, event) {
-			console.log('category_id clicked: ' + category);
-			EventBus.$emit('category', category);
+			this.$store.data.category = category;
 		},
 		loadFeed: function (feed, event) {
-			console.log('feed_id clicked: ' + feed);
-			EventBus.$emit('feed', feed);
+			this.$store.data.feed = feed;
 		}
 	},
 	computed: {

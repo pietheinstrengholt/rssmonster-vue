@@ -142,19 +142,6 @@ div.block div.article-content img {
 import InfiniteLoading from 'vue-infinite-loading';
 require('waypoints/lib/noframework.waypoints.js');
 
-//import the EventBus
-import { EventBus } from './../event-bus.js';
-
-// Listen for the i-got-clicked event and its payload.
-EventBus.$on('category', status => {
-	console.log(`Oh, that's nice. the category has been changed to ${status}! :)`);
-	RSSMonster.flushPool();
-});
-
-EventBus.$on('feed', status => {
-	console.log(`Oh, that's nice. the feed has been changed to ${status}! :)`);
-});
-
 export default {
 	data() {
 		return {
@@ -166,6 +153,17 @@ export default {
 			waypointPool: []
 		}
 	},
+	store: {
+        data: 'data'
+    },
+    watch: {
+		'$store.data.category': function (val, oldVal) {
+			console.log('new category: %s, old category: %s', val, oldVal)
+		},
+		'$store.data.feed': function (val, oldVal) {
+			console.log('new feed: %s, old feed: %s', val, oldVal)
+		}
+    },
 	components: {
 		InfiniteLoading,
 	},
