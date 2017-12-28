@@ -15,7 +15,7 @@
 					<span class="badge">-</span>
 				</div>
 			</div>
-			<draggable v-model="categories" class="dragArea" :options="{group:{ name:'category', pull:'clone', put:false }}">
+			<draggable v-model="categories" class="dragArea" :options="{group:{ name:'category', pull:'clone', put:false}}">
 				<div class="sidebar-category-main" v-on:click="loadCategory(category.id)" v-bind:id="category.id" v-for="(category, index) in categories" :key="index">
 					<div class="sidebar-category-sub">
 						<div class="glyphicon">
@@ -149,12 +149,13 @@ import draggable from 'vuedraggable';
 export default {
 	data() {
 		return {
-			categories: []
+			categories: [],
+			categoriesOrder: []
 		}
 	},
 	store: {
         data: 'data'
-    },
+	},
 	components: {
 		draggable
 	},
@@ -192,6 +193,7 @@ export default {
 			this.categories.forEach(function(category) {
 				orderList.push(category.id);
 			});
+			this.categoriesOrder = orderList;
 			return orderList;
 		}
 	}
