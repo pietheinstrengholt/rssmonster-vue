@@ -1,11 +1,20 @@
 <template>
 	<div class="feeds-inner">
 		<div class="view-toolbar">
-			<a v-on:click="loadData('unread')" id="unread" class="view-button" title="View unread" data-behavior="view_unread change_view_mode" data-view-mode="view_unread" data-remote="true" style="color: rgb(51, 51, 51);">Unread</a>
-			<a v-on:click="loadData('star')" id="star" class="view-button" title="View starred" data-behavior="view_starred change_view_mode" data-view-mode="view_starred" data-remote="true">Starred</a>
-			<a v-on:click="loadData('read')" id="read" class="view-button selected" title="View all" data-behavior="view_all change_view_mode" data-view-mode="view_all" data-remote="true">Read</a>
+			<a v-on:click="loadType('unread')" id="unread" class="view-button" title="View unread" data-behavior="view_unread change_view_mode" data-view-mode="view_unread" data-remote="true" style="color: rgb(51, 51, 51);">Unread</a>
+			<a v-on:click="loadType('star')" id="star" class="view-button" title="View starred" data-behavior="view_starred change_view_mode" data-view-mode="view_starred" data-remote="true">Starred</a>
+			<a v-on:click="loadType('read')" id="read" class="view-button selected" title="View all" data-behavior="view_all change_view_mode" data-view-mode="view_all" data-remote="true">Read</a>
 		</div>
 		<div class="drag">
+			<div class="sidebar-category-sub" v-on:click="loadAll()">
+				<div class="glyphicon">
+					<span class="glyphicon glyphicon-tree-deciduous" aria-hidden="true"></span>
+				</div>
+				<div class="title">All</div>
+				<div class="badge-unread">
+					<span class="badge">-</span>
+				</div>
+			</div>
 			<draggable v-model="categories" class="dragArea" :options="{group:{ name:'category', pull:'clone', put:false }}">
 				<div class="sidebar-category-main" v-on:click="loadCategory(category.id)" v-bind:id="category.id" v-for="(category, index) in categories" :key="index">
 					<div class="sidebar-category-sub">
@@ -162,7 +171,11 @@ export default {
 				this.categories = data;
 			});
 		},
-		loadData: function (type, event) {
+		loadAll: function () {
+			this.$store.data.category = null;
+			this.$store.data.feed = null;
+		},
+		loadType: function (type, event) {
 			this.$store.data.type = type;
 		},
 		loadCategory: function (category, event) {
