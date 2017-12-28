@@ -293,12 +293,9 @@ export default {
 
 			//make ajax request to change bookmark status
 			this.$http.post('http://localhost/rssmonster/public/api/article/mark-with-star/' + article, {update: bookmarkChange}).then(response => {
-				// get status
+				//get status & status text
 				console.log(response.status);
-
-				// get status text
 				console.log(response.statusText);
-
 			}, response => {
 				console.log('oops something went wrong');
 			});

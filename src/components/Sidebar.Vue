@@ -15,7 +15,7 @@
 					<span class="badge">-</span>
 				</div>
 			</div>
-			<draggable v-model="categories" class="dragArea" :options="{group:{ name:'category', pull:'clone', put:false}}">
+			<draggable v-model="categories" class="dragArea" :options="{group:{ name:'category', pull:'clone', put:false}}" @end="updateSortOrder">
 				<div class="sidebar-category-main" v-on:click="loadCategory(category.id)" v-bind:id="category.id" v-for="(category, index) in categories" :key="index">
 					<div class="sidebar-category-sub">
 						<div class="glyphicon">
@@ -184,6 +184,23 @@ export default {
 		},
 		loadFeed: function (feed, event) {
 			this.$store.data.feed = feed;
+		},
+		updateSortOrder(e) {
+			var orderList = new Array();
+			for (let i = 0; i < this.categories.length; i++) {
+				orderList.push(this.categories[i]['id']);
+			}
+			this.$http.post('http://localhost/rssmonster/public/api/category/updateorder', {
+					params: {
+						//this is the argument used
+						order: orderList,
+					},
+				}).then(response => {
+					//get status & status text
+					console.log(response.status);
+				}, response => {
+					console.log('oops something went wrong');
+				});
 		}
 
 	},
