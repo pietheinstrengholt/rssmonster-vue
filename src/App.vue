@@ -13,7 +13,7 @@
 
 <style>
 /* Landscape phones and portrait tablets */
-@media (max-width: 767px) {
+@media (max-width: 988px) {
 	div.sidebar {
         display:none;
     }
