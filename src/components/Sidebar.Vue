@@ -40,10 +40,6 @@
 				</div>
 			</draggable>
 		</div>
-		<div style="margin-top:400px; position: absolute;">
-			<pre>{{orderList}}</pre>
-		</div>
-
 	</div>
 </template>
 
@@ -140,7 +136,6 @@ div.glyphicon {
 	float:left;
 	margin-right:3px;
 }
-
 </style>
 
 <script>
