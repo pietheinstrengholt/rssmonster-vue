@@ -9,7 +9,7 @@
 				</h4>
 				<div class="feedname">
 					<span class="favicon">
-						<img class="favicon" src="#">
+						<img class="favicon" :src="article.favicon">
 					</span>
 					<span class="feed_name" v-text="article.feed_name"></span>
 					<span class="break"> | </span>
@@ -136,6 +136,12 @@ div.block div.article-content img {
 	max-width: 100%;
 	height: auto;
 }
+
+div.block span.favicon img.favicon {
+	margin-right: 5px;
+	height: 18px;
+	width: 18px;
+}
 </style>
 
 <script>
@@ -155,13 +161,29 @@ export default {
 	},
 	store: {
         data: 'data'
-    },
+	},
+	//watch the data store, when changing reload the article details
     watch: {
-		'$store.data.category': function (val, oldVal) {
-			console.log('new category: %s, old category: %s', val, oldVal)
-		},
-		'$store.data.feed': function (val, oldVal) {
-			console.log('new feed: %s, old feed: %s', val, oldVal)
+		'$store.data': {
+			handler: function(data) {
+				this.$http.get('http://localhost/rssmonster/public/api/article/listing?status=', {
+					params: {
+						//the following arguments are used
+						status: data.type,
+						category_id: data.category,
+						feed_id: data.feed,
+					},
+					}).then(response => {
+						return response.json();
+					})
+					.then(data => {
+						//reset the pool, attach data to container and get first set of article details
+						this.resetPool();
+						this.container = data;
+						this.getArticleDetails();
+					});
+			},
+			deep: true
 		}
     },
 	components: {
@@ -179,37 +201,8 @@ export default {
 	methods: {
 		onInfinite() {
 			setTimeout(() => {
-				if ((this.container.slice(this.distance, this.distance + 20)).length == 0) {
-					this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
-				} else {
-					this.$http.get('http://localhost/rssmonster/public/api/article/details', {
-						params: {
-							//this is the argument used
-							article_id: this.container.slice(this.distance, this.distance + 20).join(","),
-						},
-					}).then((res) => {
-						if (res.data.length) {
-							this.distance = this.distance + res.data.length;
-							this.articles = this.articles.concat(res.data);
-							this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
-							//add waypoint to every article
-							setTimeout(() => {
-								for (var key in this.articles) {
-									var article = this.articles[key];
-									//make sure only one waypoint per article is set, check the waypointPool for this
-									if (!this.waypointPool.includes(article.id)) {
-										this.waypointCreate(article.id);
-										this.waypointPool.push(article.id);
-									}
-								}
-							}, 50);
-						} else {
-							//show complete message and flush remaining items in queue by marking them all as read
-							this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
-							this.flushPool();
-						}
-					});
-				}
+				//call getArticleDetails
+				this.getArticleDetails();
 			}, 200);
 		},
 		flushPool() {
@@ -221,6 +214,46 @@ export default {
 						this.markArticleRead(this.container[i]);
 					}
 				}
+			}
+		},
+		resetPool() {
+			//reset the articles, container and distance
+			this.articles = [];
+			this.container = [];
+			this.distance = 0;
+		},
+		getArticleDetails() {
+			//check the container size
+			if ((this.container.slice(this.distance, this.distance + 20)).length == 0) {
+				this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+			} else {
+				this.$http.get('http://localhost/rssmonster/public/api/article/details', {
+					params: {
+						//this is the argument used
+						article_id: this.container.slice(this.distance, this.distance + 20).join(","),
+					},
+				}).then((res) => {
+					if (res.data.length) {
+						this.distance = this.distance + res.data.length;
+						this.articles = this.articles.concat(res.data);
+						this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
+						//add waypoint to every article
+						setTimeout(() => {
+							for (var key in this.articles) {
+								var article = this.articles[key];
+								//make sure only one waypoint per article is set, check the waypointPool for this
+								if (!this.waypointPool.includes(article.id)) {
+									this.waypointCreate(article.id);
+									this.waypointPool.push(article.id);
+								}
+							}
+						}, 50);
+					} else {
+						//show complete message and flush remaining items in queue by marking them all as read
+						this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+						this.flushPool();
+					}
+				});
 			}
 		},
 		waypointCreate(article) {

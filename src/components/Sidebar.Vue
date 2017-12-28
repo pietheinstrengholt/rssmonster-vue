@@ -162,12 +162,16 @@ export default {
 				this.categories = data;
 			});
 		},
+		loadData: function (type, event) {
+			this.$store.data.type = type;
+		},
 		loadCategory: function (category, event) {
 			this.$store.data.category = category;
 		},
 		loadFeed: function (feed, event) {
 			this.$store.data.feed = feed;
 		}
+
 	},
 	computed: {
 		orderList() {

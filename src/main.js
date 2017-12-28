@@ -14,8 +14,9 @@ new Vue({
 	data: {
 		store: {
 			data: {
-				category: 0,
-				feed: 0
+				type: 'unread',
+				category: null,
+				feed: null
 			}
 		}
 	},
