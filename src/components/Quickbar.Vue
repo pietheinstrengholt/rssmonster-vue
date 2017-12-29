@@ -5,3 +5,19 @@
         <a v-on:click="loadType('read')" id="read" class="view-button selected" title="View all" data-behavior="view_all change_view_mode" data-view-mode="view_all" data-remote="true">Read</a>
     </div>
 </template>
+
+<script>
+import draggable from 'vuedraggable';
+
+export default {
+	store: {
+        data: 'data'
+	},
+	methods: {
+		loadType: function (type, event) {
+			this.$store.data.type = type;
+		}
+
+	}
+}
+</script>

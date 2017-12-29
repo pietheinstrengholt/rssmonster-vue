@@ -166,9 +166,6 @@ export default {
 			this.$store.data.category = null;
 			this.$store.data.feed = null;
 		},
-		loadType: function (type, event) {
-			this.$store.data.type = type;
-		},
 		loadCategory: function (category, event) {
 			this.$store.data.category = category;
 		},
