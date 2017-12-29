@@ -1,6 +1,5 @@
 # TODO
 
-* Remove view-toolbar from Sidebar.Vue, replace by Quickbar.Vue
 * Extend API with count for starred, read and unread
 * Create computed properties with total for starred, read and unread
 * Dynamic component for starred, read and unread
